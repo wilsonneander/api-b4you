@@ -1,0 +1,25 @@
+# BACKEND
+/backend/node_modules/
+backend/node_modules/      
+/backend/dist/
+backend/dist/              
+/backend/build/
+/backend/*.log
+/backend/.env
+/backend/*.tsbuildinfo
+
+# FRONTEND (caso ainda vá criar)
+frontend/node_modules/
+frontend/dist/
+/frontend/build/
+/frontend/.env
+
+# GERAL
+.DS_Store
+Thumbs.db
+*.log
+*.tsbuildinfo
+
+# CONFIGURAÇÕES DE EDITORES
+.vscode/
+.idea/
