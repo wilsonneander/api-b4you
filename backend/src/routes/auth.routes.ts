@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET, JWT_EXPIRES_IN } from '../types/env';
 
 const router = Router();
 
@@ -12,10 +13,11 @@ router.post('/login', (req, res) => {
 
   if (email === 'admin@b4you.dev' && password === '123456') {
     try {
-      const token = jwt.sign({ email }, process.env.JWT_SECRET as string, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '1h'
-      });
-
+      const token = jwt.sign(
+        { email },
+        JWT_SECRET as string,
+        { expiresIn: JWT_EXPIRES_IN as string }
+      );
       return res.json({ token });
     } catch (error) {
       return res.status(500).json({ error: 'Erro ao gerar token.' });
