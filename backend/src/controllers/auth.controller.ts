@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET, JWT_EXPIRES_IN } from '../types/env';
+import { JWT_SECRET, JWT_EXPIRES_IN, USER_PASSWORD, USER_EMAIL } from '../types/env';
 
 export function login(req: Request, res: Response) {
     const { email, password } = req.body;
@@ -9,7 +9,7 @@ export function login(req: Request, res: Response) {
       return res.status(400).json({ error: 'Email e senha são obrigatórios.' });
     }
   
-    if (email === 'admin@b4you.dev' && password === '123456') {
+    if (email === USER_EMAIL && password === USER_PASSWORD) {
       try {
         const token = jwt.sign(
           { email },
