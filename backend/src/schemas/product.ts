@@ -1,10 +1,27 @@
-import { Table, Column, Model, DataType, PrimaryKey, AutoIncrement, AllowNull } from 'sequelize-typescript';
+// product.ts
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  PrimaryKey,
+  AutoIncrement,
+  AllowNull,
+} from 'sequelize-typescript';
+
+export interface ProductCreationAttributes {
+  name: string;
+  result: string;
+  days: number;
+  category: string;
+  image: string;
+}
 
 @Table({
   tableName: 'products',
   timestamps: false,
 })
-export class Product extends Model<Product> {
+export class Product extends Model<Product, ProductCreationAttributes> {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
@@ -15,9 +32,18 @@ export class Product extends Model<Product> {
   name!: string;
 
   @AllowNull(false)
-  @Column(DataType.FLOAT)
-  price!: number;
-
   @Column(DataType.STRING)
-  description?: string;
+  result!: string;
+
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  days!: number;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  category!: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  image!: string;
 }

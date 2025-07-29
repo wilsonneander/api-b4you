@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "B4YOU - Sistema de Gestão",
+  title: "B4you - Wilson Neander",
   description: "Plataforma definitiva para marcas que querem potencializar as vendas",
   icons: {
     icon: "/favicon.ico",

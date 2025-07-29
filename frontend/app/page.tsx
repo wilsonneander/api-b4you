@@ -13,7 +13,7 @@ export default function Home() {
     const token = localStorage.getItem("b4you-token")
     if (token) {
       setIsAuthenticated(true)
-      // Delay para mostrar a animação de fade-in
+      
       setTimeout(() => setShowDashboard(true), 100)
     }
     setIsLoading(false)
