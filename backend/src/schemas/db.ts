@@ -3,15 +3,25 @@ import { CreationAttributes } from 'sequelize';
 import { Product } from './product';
 import 'dotenv/config';
 
+console.log({
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  pass: process.env.DATABASE_PASSWORD,
+  db: process.env.DATABASE_NAME
+});
+
 export const sequelize = new Sequelize({
   dialect: 'mysql',
-  host: 'localhost',
-  username: 'root',
+  host: process.env.DATABASE_HOST,
+  username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   models: [Product],
   logging: false,
+  
 });
+
+
 
 async function seedProducts() {
   await sequelize.sync({ force: false });
