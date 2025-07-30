@@ -12,7 +12,6 @@ export const CATEGORY_IDS = {
 } as const
 
 export async function seedCategories(closeConnection: boolean = true) {
-    // await sequelize.sync({ force: false });
   
     const initialCategories: CreationAttributes<Category>[] = [
       {

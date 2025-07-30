@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { Product } from '../models/product.model';
 import { Category } from '../models/category.model';
 
-// Listar todos os produtos
+
 export const listProducts = async (_req: Request, res: Response) => {
   try {
     const products = await Product.findAll({
@@ -30,12 +30,10 @@ export const listProducts = async (_req: Request, res: Response) => {
   }
 };
 
-// Criar novo produto
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, result, days, categoryId, image } = req.body;
 
-    // Validação adicional no controller
     if (!name || !result || !days || !categoryId || !image) {
       return res.status(400).json({
         success: false,
@@ -44,7 +42,6 @@ export const createProduct = async (req: Request, res: Response) => {
       });
     }
 
-    // Verificar se a categoria existe antes de criar o produto
     const category = await Category.findByPk(categoryId);
     if (!category) {
       return res.status(404).json({
@@ -77,7 +74,7 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-// Buscar produto por ID
+
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -121,7 +118,7 @@ export const getProductById = async (req: Request, res: Response) => {
   }
 };
 
-// Atualizar produto por ID
+
 export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -134,7 +131,7 @@ export const updateProduct = async (req: Request, res: Response) => {
       });
     }
 
-    // Verificar se o produto existe
+
     const existingProduct = await Product.findByPk(productId);
     if (!existingProduct) {
       return res.status(404).json({ 
@@ -154,7 +151,7 @@ export const updateProduct = async (req: Request, res: Response) => {
       });
     }
 
-    // Buscar o produto atualizado
+
     const updatedProduct = await Product.findByPk(productId);
 
     return res.status(200).json({
@@ -172,7 +169,6 @@ export const updateProduct = async (req: Request, res: Response) => {
   }
 };
 
-// Deletar produto por ID
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -185,7 +181,6 @@ export const deleteProduct = async (req: Request, res: Response) => {
       });
     }
 
-    // Verificar se o produto existe antes de deletar
     const existingProduct = await Product.findByPk(productId);
     if (!existingProduct) {
       return res.status(404).json({ 

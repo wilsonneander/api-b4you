@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 
-// Schema para login
 export const loginSchema = yup.object({
   body: yup.object({
     email: yup

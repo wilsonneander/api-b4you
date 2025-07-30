@@ -6,7 +6,6 @@ const USER_EMAIL: string = process.env.USER_EMAIL || '';
 const USER_PASSWORD: string = process.env.USER_PASSWORD || '';
 
 export async function seedUsers(closeConnection: boolean = true) {
-    // await sequelize.sync({ force: false });
   
     if (!USER_EMAIL || !USER_PASSWORD) {
       console.error('USER_EMAIL e USER_PASSWORD devem estar definidos no .env');

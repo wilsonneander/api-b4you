@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 
-// Schema para criação de produto
 export const createProductSchema = yup.object({
   body: yup.object({
     name: yup
@@ -32,7 +31,6 @@ export const createProductSchema = yup.object({
   }),
 });
 
-// Schema para atualização de produto
 export const updateProductSchema = yup.object({
   params: yup.object({
     id: yup
@@ -70,7 +68,6 @@ export const updateProductSchema = yup.object({
   }),
 });
 
-// Schema para buscar produto por ID
 export const getProductByIdSchema = yup.object({
   params: yup.object({
     id: yup
@@ -80,7 +77,6 @@ export const getProductByIdSchema = yup.object({
   }),
 });
 
-// Schema para deletar produto por ID
 export const deleteProductSchema = yup.object({
   params: yup.object({
     id: yup

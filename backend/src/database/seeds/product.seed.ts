@@ -4,7 +4,6 @@ import { sequelize } from "../config";
 import { CATEGORY_IDS } from "./category.seed";
 
 export async function seedProducts(closeConnection: boolean = true) {
-    // await sequelize.sync({ force: false });
   
     const initialProducts: CreationAttributes<Product>[]  = [
       {

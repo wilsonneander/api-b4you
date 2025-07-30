@@ -7,11 +7,9 @@ async function runAllSeeds() {
   try {
     console.log('🌱 Iniciando execução dos seeds...');
     
-    // Force sync to ensure tables exist with correct structure
     console.log('🔄 Sincronizando banco de dados...');
     await sequelize.sync({ force: true });
     
-    // Run seeds in order (categories first, then products, then users)
     console.log('📂 Executando seed de categorias...');
     await seedCategories(false);
     
