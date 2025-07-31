@@ -7,6 +7,7 @@ import ProductForm from "@/components/product-form"
 import DeleteModal from "@/components/delete-modal"
 import { Plus, LogOut } from "lucide-react"
 import Image from "next/image"
+import Cookies from "js-cookie"
 
 export interface Product {
   id: string
@@ -78,7 +79,7 @@ export default function ProductDashboard() {
     // Adicionar fade-out antes de fazer logout
     document.body.style.opacity = "0"
     setTimeout(() => {
-      localStorage.removeItem("b4you-token")
+      Cookies.remove("token")
       window.location.reload()
     }, 300)
   }

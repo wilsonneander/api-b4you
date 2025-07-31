@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { useLogin } from '@/api/use-login';
+import Cookies from 'js-cookie';
 
 
 interface LoginPageProps {
@@ -34,13 +36,27 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<LoginForm>({
     resolver: yupResolver(loginSchema)
   })
-  const isLoading=false
-  const onSubmit: SubmitHandler<LoginForm> = (data) => console.log(data)
+const {mutateAsync, isPending} = useLogin()
+
+const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+  try {
+    const response = await mutateAsync(data)
+    const token = response.data?.token
+
+    if (token) {
+      Cookies.set('token', token, { expires: 1 })
+      console.log('Token salvo:', token)
+
+      onLoginSuccess?.()
+    }
+  } catch (error) {
+    console.error('Erro no login:', error)
+  }
+}
 
   return (
     <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center p-4">
@@ -85,10 +101,10 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
             </div>
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isPending}
               className="w-full bg-[#5bebd4] hover:bg-[#4dd4bd] text-white font-medium transition-all duration-200 bg-[rgba(32,180,145,1)]"
             >
-              {isLoading ? (
+              {isPending ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                   Entrando...
