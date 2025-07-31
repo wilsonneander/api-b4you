@@ -1,126 +1,111 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import ProductCarousel from "@/components/product-carousel"
-import ProductForm from "@/components/product-form"
-import DeleteModal from "@/components/delete-modal"
-import { Plus, LogOut } from "lucide-react"
-import Image from "next/image"
-import Cookies from "js-cookie"
-
-export interface Product {
-  id: string
-  name: string
-  result: string
-  days: number
-  category: string
-  image: string
-}
-
-const initialProducts: Product[] = [
-  {
-    id: "1",
-    name: "LipeLift",
-    result: "100 mil reais em 30 dias",
-    days: 30,
-    category: "Suplementação Feminina",
-    image: "/products/Lipefit.webp",
-  },
-  {
-    id: "2",
-    name: "Dreams Coffe",
-    result: "10 milhões de Faturados em 2024",
-    days: 7,
-    category: "Suplementos e Vitaminas",
-    image: "/products/Dreams.coffee.jpg",
-  },
-  {
-    id: "3",
-    name: "Blessy",
-    result: "386 mil reais em 30 dias",
-    days: 30,
-    category: "Suplementação Feminina",
-    image: "/products/Blessy.jpeg",
-  },
-  {
-    id: "4",
-    name: "Lucence",
-    result: "1,4 milhão em 65 dias",
-    days: 65,
-    category: "Cosméticos",
-    image: "/products/Lucence.avif",
-  },
-  {
-    id: "5",
-    name: "Saviora",
-    result: "600 mil reais em 90 dias",
-    days: 90,
-    category: "Cosméticos",
-    image: "/products/Saviora.avif",
-  },
-  {
-    id: "6",
-    name: "Bigboom",
-    result: "5 milhões faturados",
-    days: 90,
-    category: "Suplementação Femenina",
-    image: "/products/Bigboom.avif",
-  },
-]
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import ProductCarousel from "@/components/product-carousel";
+import ProductForm from "@/components/product-form";
+import DeleteModal from "@/components/delete-modal";
+import { Plus, LogOut } from "lucide-react";
+import Image from "next/image";
+import Cookies from "js-cookie";
+import { Product, ProductFormData, useProducts } from "@/api/use-products";
+import {
+  useCreateProduct,
+  useUpdateProduct,
+  useDeleteProduct,
+} from "@/api/use-products";
 
 export default function ProductDashboard() {
-  const [products, setProducts] = useState<Product[]>(initialProducts)
-  const [showForm, setShowForm] = useState(false)
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
-  const [deleteProduct, setDeleteProduct] = useState<Product | null>(null)
+  const { data, error, isLoading } = useProducts();
+  const products = data?.data || [];
+  const [showForm, setShowForm] = useState(false);
+  const [formErrors, setFormErrors] = useState<string | null>();
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [deleteProduct, setDeleteProduct] = useState<Product | null>(null);
+  const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
+  const deleteProductMutation = useDeleteProduct();
 
   const handleLogout = () => {
-    // Adicionar fade-out antes de fazer logout
-    document.body.style.opacity = "0"
+    document.body.style.opacity = "0";
     setTimeout(() => {
-      Cookies.remove("token")
-      window.location.reload()
-    }, 300)
-  }
+      Cookies.remove("token");
+      window.location.reload();
+    }, 300);
+  };
 
-  const handleSaveProduct = (productData: Omit<Product, "id">) => {
-    if (editingProduct) {
-      setProducts(products.map((p) => (p.id === editingProduct.id ? { ...productData, id: editingProduct.id } : p)))
-    } else {
-      const newProduct: Product = {
-        ...productData,
-        id: Date.now().toString(),
+  // ✅ Alteração no tipo para garantir categoryId e excluir category
+  const handleSaveProduct = async (
+    productData: ProductFormData
+  ) => {
+    try {
+      if (editingProduct) {
+        await updateProduct.mutateAsync({
+          id: editingProduct.id,
+          data: productData,
+        });
+      } else {
+        await createProduct.mutateAsync(productData);
       }
-      setProducts([...products, newProduct])
+      setFormErrors(null)
+    } catch(error) {
+      setFormErrors(error as string)
+      console.log('Erro ao salvar o produto.')
     }
-    setShowForm(false)
-    setEditingProduct(null)
-  }
+    
+    setShowForm(false);
+    setEditingProduct(null);
+  };
 
   const handleEditProduct = (product: Product) => {
-    setEditingProduct(product)
-    setShowForm(true)
-  }
+    setEditingProduct(product);
+    setShowForm(true);
+  };
 
   const handleDeleteProduct = (product: Product) => {
-    setDeleteProduct(product)
-  }
+    setDeleteProduct(product);
+  };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deleteProduct) {
-      setProducts(products.filter((p) => p.id !== deleteProduct.id))
-      setDeleteProduct(null)
+      await deleteProductMutation.mutateAsync(deleteProduct.id);
+      setDeleteProduct(null);
     }
-  }
+  };
 
   const handleCloseForm = () => {
-    setShowForm(false)
-    setEditingProduct(null)
+    setShowForm(false);
+    setEditingProduct(null);
+  };
+
+  if (error instanceof Error) {
+    return (
+      <div className="text-red-600">
+        Erro ao carregar produtos: {error.message}
+      </div>
+    );
+  }
+
+  if (formErrors) {
+    return (
+      <div className="text-red-600">
+        Erro ao salvar o produto: {formErrors}
+      </div>
+    );
   }
 
   if (showForm) {
-    return <ProductForm product={editingProduct} onSave={handleSaveProduct} onCancel={handleCloseForm} />
+    return (
+      <ProductForm
+        product={editingProduct}
+        onSubmit={handleSaveProduct}
+        onCancel={handleCloseForm}
+      />
+    );
+  }
+
+  if (isLoading) {
+    return (<div className="">Carregando produtos...</div>);
   }
 
   return (
@@ -128,11 +113,17 @@ export default function ProductDashboard() {
       {/* Header */}
       <header className="border-b border-gray-200 px-6 py-4 bg-[rgba(18,18,18,1)]">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Image src="/b4you-logo.png" alt="B4YOU Logo" width={80} height={40} />
-          </div>
+          <Image
+            src="/b4you-logo.png"
+            alt="B4YOU Logo"
+            width={80}
+            height={40}
+          />
           <div className="flex items-center gap-4">
-            <Button onClick={() => setShowForm(true)} className="bg-[#028c02] hover:bg-[#4dd4bd] text-white">
+            <Button
+              onClick={() => setShowForm(true)}
+              className="bg-[#028c02] hover:bg-[#4dd4bd] text-white"
+            >
               <Plus className="w-4 h-4 mr-2" />
               Novo Produto
             </Button>
@@ -148,20 +139,32 @@ export default function ProductDashboard() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main */}
       <main className="px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#2D1B69] mb-2">Produtos em Destaque</h1>
-          <p className="text-gray-600">Gerencie seus produtos e acompanhe os resultados</p>
+          <h1 className="text-3xl font-bold text-[#2D1B69] mb-2">
+            Produtos em Destaque
+          </h1>
+          <p className="text-gray-600">
+            Gerencie seus produtos e acompanhe os resultados
+          </p>
         </div>
 
-        <ProductCarousel products={products} onEdit={handleEditProduct} onDelete={handleDeleteProduct} />
+        <ProductCarousel
+          products={products}
+          onEdit={handleEditProduct}
+          onDelete={handleDeleteProduct}
+        />
       </main>
 
       {/* Delete Modal */}
       {deleteProduct && (
-        <DeleteModal product={deleteProduct} onConfirm={confirmDelete} onCancel={() => setDeleteProduct(null)} />
+        <DeleteModal
+          product={deleteProduct}
+          onConfirm={confirmDelete}
+          onCancel={() => setDeleteProduct(null)}
+        />
       )}
     </div>
-  )
+  );
 }

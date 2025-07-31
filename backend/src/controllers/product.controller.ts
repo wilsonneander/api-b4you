@@ -77,7 +77,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params;  
     const productId = parseInt(id);
 
     if (isNaN(productId)) {

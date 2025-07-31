@@ -46,6 +46,7 @@ const onSubmit: SubmitHandler<LoginForm> = async (data) => {
   try {
     const response = await mutateAsync(data)
     const token = response?.token
+
     if (token) {
       Cookies.set('token', token, { expires: 1 })
       console.log('Token salvo:', token)
@@ -56,6 +57,7 @@ const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     console.error('Erro no login:', error)
   }
 }
+
 
   return (
     <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center p-4">
@@ -82,7 +84,7 @@ const onSubmit: SubmitHandler<LoginForm> = async (data) => {
                 className="border-gray-300 focus:border-[#5bebd4] focus:ring-[#5bebd4]"
                 placeholder="seu@email.com"
               />
-              <p>{errors.email?.message}</p>
+              <p className='text-red-600'>{errors.email?.message}</p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-[#2D1B69]">
@@ -96,7 +98,7 @@ const onSubmit: SubmitHandler<LoginForm> = async (data) => {
                 className="border-gray-300 focus:border-[#5bebd4] focus:ring-[#5bebd4]"
                 placeholder="••••••••"
               />
-              <p>{errors.password?.message}</p>
+              <p className="error">{errors.password?.message}</p>
             </div>
             <Button
               type="submit"
