@@ -8,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html>
+    <html lang="pt" className="light" style={{ colorScheme: 'light' }}>
       <body>
         <Providers>
        {children}

@@ -45,8 +45,7 @@ const {mutateAsync, isPending} = useLogin()
 const onSubmit: SubmitHandler<LoginForm> = async (data) => {
   try {
     const response = await mutateAsync(data)
-    const token = response.data?.token
-
+    const token = response?.token
     if (token) {
       Cookies.set('token', token, { expires: 1 })
       console.log('Token salvo:', token)
