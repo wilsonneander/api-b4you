@@ -1,32 +1,46 @@
 "use client"
-
+import * as yup from 'yup';
 import type React from "react"
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+
 
 interface LoginPageProps {
   onLoginSuccess?: () => void
 }
 
+interface LoginForm {
+  email: string
+  password: string
+}
+
+export const loginSchema = yup.object({
+    email: yup
+      .string()
+      .required('Email é obrigatório')
+      .email('Email deve ser um email válido'),
+    password: yup
+      .string()
+      .required('Senha é obrigatória')
+      .min(6, 'Senha deve ter pelo menos 6 caracteres'),
+}); 
+
 export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
-    // Simular login
-    setTimeout(() => {
-      localStorage.setItem("b4you-token", "fake-jwt-token")
-      onLoginSuccess?.()
-    }, 1000)
-  }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<LoginForm>({
+    resolver: yupResolver(loginSchema)
+  })
+  const isLoading=false
+  const onSubmit: SubmitHandler<LoginForm> = (data) => console.log(data)
 
   return (
     <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center p-4">
@@ -42,20 +56,18 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
           <p className="text-sm text-gray-600 mt-2">Acesse sua plataforma de gestão</p>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-[#2D1B69]">
                 Email
               </Label>
               <Input
                 id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                {...register("email", { required: true })}
                 className="border-gray-300 focus:border-[#5bebd4] focus:ring-[#5bebd4]"
                 placeholder="seu@email.com"
               />
+              <p>{errors.email?.message}</p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-[#2D1B69]">
@@ -64,12 +76,12 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
               <Input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                {...register("password", { required: true })}
                 required
                 className="border-gray-300 focus:border-[#5bebd4] focus:ring-[#5bebd4]"
                 placeholder="••••••••"
               />
+              <p>{errors.password?.message}</p>
             </div>
             <Button
               type="submit"
