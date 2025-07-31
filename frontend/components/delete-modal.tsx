@@ -23,7 +23,7 @@ export default function DeleteModal({ product, onConfirm, onCancel }: DeleteModa
             <Button
               onClick={onCancel}
               variant="outline"
-              className="border-[#5bebd4] text-[#5bebd4] hover:bg-[#5bebd4] hover:text-white flex-1 bg-[rgba(255,8,23,1)] text-white"
+              className="border-[#5bebd4] text-[#5bebd4] hover:bg-[#5bebd4] hover:text-white flex-1 bg-[rgba(255,8,23,1)]"
             >
               Cancelar
             </Button>

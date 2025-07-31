@@ -27,7 +27,6 @@ export default function ProductCarousel({ products, onEdit, onDelete }: ProductC
                 key={product.id}
                 className={`border border-gray-200 rounded-2xl overflow-hidden relative group shadow-lg`}
               >
-                {/* Ações */}
                 <div className="absolute top-4 right-4 z-10 flex gap-2">
                   <Button
                     size="sm"
@@ -45,10 +44,9 @@ export default function ProductCarousel({ products, onEdit, onDelete }: ProductC
                   </Button>
                 </div>
 
-                {/* Imagem */}
                 <div className="h-48 overflow-hidden">
                   <Image
-                    src={product.image || "/placeholder.svg"}
+                    src={product.image}
                     alt={product.name}
                     width={300}
                     height={200}
@@ -56,7 +54,6 @@ export default function ProductCarousel({ products, onEdit, onDelete }: ProductC
                   />
                 </div>
 
-                {/* Conteúdo */}
                 <div className={`${bgColor} p-4 space-y-3`}>
                   <h3 className={`text-xl font-bold ${textColor}`}>{product.name}</h3>
                   <p className={`text-sm ${textColor} leading-relaxed`}>{product.result}</p>

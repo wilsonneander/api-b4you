@@ -110,7 +110,6 @@ export default function ProductDashboard() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
       <header className="border-b border-gray-200 px-6 py-4 bg-[rgba(18,18,18,1)]">
         <div className="flex items-center justify-between">
           <Image
@@ -139,7 +138,6 @@ export default function ProductDashboard() {
         </div>
       </header>
 
-      {/* Main */}
       <main className="px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#2D1B69] mb-2">
@@ -157,7 +155,6 @@ export default function ProductDashboard() {
         />
       </main>
 
-      {/* Delete Modal */}
       {deleteProduct && (
         <DeleteModal
           product={deleteProduct}

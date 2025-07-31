@@ -59,11 +59,10 @@ export const productSchema = yup.object({
     .url("Imagem deve ser uma URL válida"),
 });
 
-// GET: Buscar todos os produtos
 export function useProducts() {
   return useQuery<ProductResponse>({
     queryKey: ["get-products"],
-    enabled: isBrowser(), // <- ESSA LINHA é o segredo
+    enabled: isBrowser(),
     queryFn: async () => {
       const res = await api.get<ProductResponse>("/products");
       return res.data;
@@ -71,7 +70,6 @@ export function useProducts() {
   });
 }
 
-// POST: Criar produto
 export function useCreateProduct() {
   const queryClient = useQueryClient();
 
@@ -86,7 +84,6 @@ export function useCreateProduct() {
   });
 }
 
-// PUT: Atualizar produto
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
 
@@ -101,7 +98,6 @@ export function useUpdateProduct() {
   });
 }
 
-// DELETE: Deletar produto
 export function useDeleteProduct() {
   const queryClient = useQueryClient();
 
