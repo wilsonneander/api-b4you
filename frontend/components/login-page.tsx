@@ -40,8 +40,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
   } = useForm<LoginForm>({
     resolver: yupResolver(loginSchema)
   })
-const {mutateAsync, isPending} = useLogin()
-
+const {mutateAsync, error, isPending} = useLogin()
 const onSubmit: SubmitHandler<LoginForm> = async (data) => {
   try {
     const response = await mutateAsync(data)
@@ -98,8 +97,9 @@ const onSubmit: SubmitHandler<LoginForm> = async (data) => {
                 className="border-gray-300 focus:border-[#5bebd4] focus:ring-[#5bebd4]"
                 placeholder="••••••••"
               />
-              <p className="error">{errors.password?.message}</p>
+              <p className="text-red-600">{errors.password?.message}</p>
             </div>
+            <p className="text-red-600">{(error as any)?.response?.data?.message}</p>
             <Button
               type="submit"
               disabled={isPending}

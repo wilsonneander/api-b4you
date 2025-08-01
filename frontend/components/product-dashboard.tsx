@@ -34,10 +34,7 @@ export default function ProductDashboard() {
     }, 300);
   };
 
-  // ✅ Alteração no tipo para garantir categoryId e excluir category
-  const handleSaveProduct = async (
-    productData: ProductFormData
-  ) => {
+  const handleSaveProduct = async (productData: ProductFormData) => {
     try {
       if (editingProduct) {
         await updateProduct.mutateAsync({
@@ -47,12 +44,12 @@ export default function ProductDashboard() {
       } else {
         await createProduct.mutateAsync(productData);
       }
-      setFormErrors(null)
-    } catch(error) {
-      setFormErrors(error as string)
-      console.log('Erro ao salvar o produto.')
+      setFormErrors(null);
+    } catch (error) {
+      setFormErrors(error as string);
+      console.log("Erro ao salvar o produto.");
     }
-    
+
     setShowForm(false);
     setEditingProduct(null);
   };
@@ -78,22 +75,6 @@ export default function ProductDashboard() {
     setEditingProduct(null);
   };
 
-  if (error instanceof Error) {
-    return (
-      <div className="text-red-600">
-        Erro ao carregar produtos: {error.message}
-      </div>
-    );
-  }
-
-  if (formErrors) {
-    return (
-      <div className="text-red-600">
-        Erro ao salvar o produto: {formErrors}
-      </div>
-    );
-  }
-
   if (showForm) {
     return (
       <ProductForm
@@ -102,10 +83,6 @@ export default function ProductDashboard() {
         onCancel={handleCloseForm}
       />
     );
-  }
-
-  if (isLoading) {
-    return (<div className="">Carregando produtos...</div>);
   }
 
   return (
@@ -139,6 +116,11 @@ export default function ProductDashboard() {
       </header>
 
       <main className="px-6 py-8">
+        {formErrors && (
+          <div className="text-red-600">
+            Erro ao salvar o produto: {formErrors}
+          </div>
+        )}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#2D1B69] mb-2">
             Produtos em Destaque
@@ -147,12 +129,18 @@ export default function ProductDashboard() {
             Gerencie seus produtos e acompanhe os resultados
           </p>
         </div>
+        {isLoading && <div className="">Carregando produtos...</div>}
+        {error && (
+          <div className="text-red-600">
+            Erro ao carregar produtos: {error.message}
+          </div>
+        )}
 
-        <ProductCarousel
+        {!isLoading && !error && <ProductCarousel
           products={products}
           onEdit={handleEditProduct}
           onDelete={handleDeleteProduct}
-        />
+        />}
       </main>
 
       {deleteProduct && (
