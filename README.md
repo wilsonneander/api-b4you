@@ -56,28 +56,6 @@ docker compose up
 > Isso iniciará o banco de dados MySQL e a API na porta `3001`. O frontend estará disponível em `http://localhost:3000`.
 
 ---
-
-### Sem Docker
-
-#### Backend
-
-```bash
-cd backend
-npm install
-npm run seed
-npm run dev
-```
-
-#### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
----
-
 ## 🧪 Autenticação
 
 - A autenticação é feita via JWT.
@@ -94,7 +72,7 @@ npm run dev
 - Criação, edição e exclusão de produtos (CRUD)
 - Middleware de autenticação protegendo rotas privadas
 - Validações com Yup
-- Simulação de dados com seed inicial
+- Criação de dados com seed inicial
 
 ---
 
