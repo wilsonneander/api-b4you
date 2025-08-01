@@ -9,7 +9,6 @@ Este projeto consiste em uma aplicação completa (API + Frontend) para controle
 
 - Node.js (v18 ou superior)
 - Docker
-- Docker Compose
 
 ---
 
@@ -22,7 +21,6 @@ Este projeto consiste em uma aplicação completa (API + Frontend) para controle
 - JWT (autenticação)
 - Yup (validações)
 - MySQL (via Docker)
-- Docker Compose
 - Sequelize
 
 ### Frontend
@@ -32,6 +30,8 @@ Este projeto consiste em uma aplicação completa (API + Frontend) para controle
 - Tailwind CSS
 - Axios
 - Yup
+- TanStack Query
+- React Hook Form
 
 ---
 
@@ -47,13 +47,34 @@ git clone <b4you-api>
 
 ## 🚀 Executando a Aplicação
 
-### Usando Docker Compose
+### 1 - Iniciar banco de dados
 
 ```bash
 docker compose up
 ```
 
-> Isso iniciará o banco de dados MySQL e a API na porta `3001`. O frontend estará disponível em `http://localhost:3000`.
+> Isso iniciará o banco de dados MySQL no container.
+
+### 2 - Iniciar API
+
+```bash
+cd backend
+npm install   #Instalar todas as dependências
+npm run seed  #Popular o banco com dados iniciais
+npm run dev   #Inciar o servidor
+```
+
+> Isso iniciará API na porta 3001 com dados disponíveis no banco.
+
+### 3 - Iniciar FrontEnd
+
+```bash
+cd frontend
+npm install   #Instalar todas as dependências
+npm run dev   #Inciar o servidor
+```
+
+> Isso iniciará o frontend na porta 3000.
 
 ---
 ## 🧪 Autenticação
@@ -94,33 +115,10 @@ docker compose up
 
 ---
 
-## 📦 Scripts disponíveis
-
-### Backend
-
-```bash
-npm install       # Instala dependências
-npm run dev       # Inicia o servidor em modo desenvolvimento
-npm run seed      # Popula o banco com dados simulados
-npm run build     # Compila o TypeScript
-npm run start     # Inicia a versão compilada
-```
-
-### Frontend
-
-```bash
-npm install       # Instala dependências
-npm run dev       # Inicia o projeto Next.js em modo dev
-npm run build     # Cria a versão de produção
-npm run start     # Inicia a versão de produção
-```
-
----
-
 
 ## 📌 Observações
 
-- A estrutura do projeto backend segue organização modular com pastas como: `controllers`, `routes`, `middlewares`, `schemas`, `services`, entre outras.
+- A estrutura do projeto backend segue arquitetura MVC com pastas como: `controllers`, `routes`, `middlewares`, `models`, entre outras.
 - A UI foi inspirada diretamente no site oficial da B4you e adaptada para criar uma experiência realista de painel interno.
 
 ---
