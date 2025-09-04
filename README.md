@@ -1,4 +1,6 @@
 
+<img width="1366" height="768" alt="api" src="https://github.com/user-attachments/assets/57a787f9-2d9b-4402-8409-a803251e7f83" />
+
 # Painel de Produtos - B4you
 
 Este projeto consiste em uma aplicação completa (API + Frontend) para controle e visualização de produtos, com autenticação baseada em token JWT e painel administrativo. Inspirado na identidade visual e estrutura de produtos reais da empresa **B4you**.
@@ -92,7 +94,8 @@ npm run dev   #Inciar o servidor
 - Listagem de produtos (`/products`)
 - Criação, edição e exclusão de produtos (CRUD)
 - Middleware de autenticação protegendo rotas privadas
-- Validações com Yup
+- Validações com Yup![Uploading api.png…]()
+
 - Criação de dados com seed inicial
 
 ---
@@ -127,3 +130,4 @@ npm run dev   #Inciar o servidor
 
 Caso deseje mais informações sobre este projeto, entre em contato.
 WhatsApp (41) 99615-1290
+
